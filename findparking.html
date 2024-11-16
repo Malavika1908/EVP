@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Parking - EVP Parking</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: skyblue;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+            color: #333333;
+        }
+
+        .button-container,
+        .search-bar {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .button-container button,
+        .search-bar button {
+            background-color: #0066ff;
+            color: #ffffff;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .button-container button:hover,
+        .search-bar button:hover {
+            background-color: #0056cc;
+        }
+
+        .search-bar input {
+            padding: 0.5rem;
+            margin: 0.5rem;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .parking-results {
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .parking-spot {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border: 1px solid #eee;
+        }
+
+        .parking-spot button {
+            background-color: #28a745;
+            color: #ffffff;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .parking-spot button:hover {
+            background-color: #218838;
+        }
+
+        #map {
+            height: 400px;
+            width: 100%;
+            margin-top: 2rem;
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+
+        #booking-message {
+            display: none;
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-car"></i> Home</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>Find Parking</h1>
+
+        <section class="search-bar">
+            <input type="text" id="address-input" placeholder="Enter an address or venue">
+            <input type="datetime-local" id="start-time" name="start-time">
+            <input type="datetime-local" id="end-time" name="end-time">
+            <button id="search-button"><i class="fas fa-search"></i> Search</button>
+        </section>
+
+        <div id="results" class="parking-results"></div>
+        <div id="map"></div>
+        <div id="booking-message">Your parking spot has been booked!</div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 EVP Parking. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Load Mapbox GL JS -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js'></script>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoibWFsbnkxOTA4IiwiYSI6ImNseGtleWpxaTAwdzkya3M5ZTJwdmtwcmIifQ.ksMeua08uzgGTZ4sV-7hHg';
+        let map;
+
+        function initMap() {
+            map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v11',
+                center: [78.4867, 17.3850], // Default to Telangana
+                zoom: 12
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            initMap(); 
+            // Initialize the map when the DOM content is loaded
+
+            const searchButton = document.getElementById('search-button');
+
+            searchButton.addEventListener('click', function () {
+                const addressInput = document.getElementById('address-input').value;
+                const startTime = document.getElementById('start-time').value;
+                const endTime = document.getElementById('end-time').value;
+
+                if (addressInput.trim() === '') {
+                    alert('Please enter an address or venue.');
+                } else if (startTime === '' || endTime === '') {
+                    alert('Please select both start and end times.');
+                } else {
+                    // Use Mapbox Geocoding API to get the coordinates of the address
+                    fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(addressInput)}.json?access_token=${mapboxgl.accessToken}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.features.length > 0) {
+                                const coordinates = data.features[0].center;
+                                map.flyTo({ center: coordinates, zoom: 14 });
+                                fetchParkingSpots(coordinates[0], coordinates[1], startTime, endTime);
+                            } else {
+                                alert('Address not found.');
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+            });
+
+            function fetchParkingSpots(lon, lat, startTime, endTime) {
+                // Simulated data for demonstration
+                const parkingSpots = [
+                    { id: 1, name: "Parking Spot 1", address: "123 Main St", lat: lat + 0.01, lon: lon + 0.01 },
+                    { id: 2, name: "Parking Spot 2", address: "456 Elm St", lat: lat + 0.02, lon: lon + 0.02 },
+                    { id: 3, name: "Parking Spot 3", address: "789 Maple Ave", lat: lat + 0.03, lon: lon + 0.03 },
+                    { id: 4, name: "Parking Spot 4", address: "101 Oak St", lat: lat + 0.04, lon: lon + 0.04 },
+                    { id: 5, name: "Parking Spot 5", address: "202 Pine St", lat: lat + 0.05, lon: lon + 0.05 }
+                ];
+
+                // Display parking spots (replace with your actual UI logic)
+                displayParkingSpots(parkingSpots);
+            }
+
+            function displayParkingSpots(parkingSpots) {
+                const resultsContainer = document.getElementById('results');
+                resultsContainer.innerHTML = '';
+
+                // Clear existing markers
+                clearMarkers();
+
+                parkingSpots.forEach(spot => {
+                    const spotElement = document.createElement('div');
+                    spotElement.classList.add('parking-spot');
+                    spotElement.innerHTML = `
+                        <h3>${spot.name}</h3>
+                        <p>Address: ${spot.address}</p>
+                        <p>Latitude: ${spot.lat}, Longitude: ${spot.lon}</p>
+                        <button onclick="confirmBooking('${spot.name}')">Book</button>
+                    `;
+                    resultsContainer.appendChild(spotElement);
+
+                    // Add marker to the map
+                    addMarker(spot);
+                });
+            }
+
+            let markers = [];
+
+            function addMarker(spot) {
+                const marker = new mapboxgl.Marker()
+                    .setLngLat([spot.lon, spot.lat])
+                    .setPopup(new mapboxgl.Popup().setHTML(`<h3>${spot.name}</h3><p>${spot.address}</p>`))
+                    .addTo(map);
+                markers.push(marker);
+            }
+
+            function clearMarkers() {
+                markers.forEach(marker => {
+                    marker.remove();
+                });
+                markers = [];
+            }
+
+            window.confirmBooking = function (spotName) {
+    if (confirm(`Are you sure you want to book the parking spot at ${spotName}?`)) {
+        // Redirect to pricing.html
+        window.location.href = 'Pricing.html';
+    }
+}
+
+                }
+            
+        );
+    </script>
+</body>
+
+</html>

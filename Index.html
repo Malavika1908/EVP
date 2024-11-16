@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVP Parking</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* CSS styles can be included here or in an external styles.css file */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            color: #333;
+        }
+css
+Copy code
+    .container {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .logo {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Add more CSS styles as needed */
+</style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <img src="https://media.istockphoto.com/id/1226908974/photo/intelligent-car-app-on-smart-phone-concept.jpg?s=1024x1024&w=is&k=20&c=mo57-QSPNkvQakbwojwhsSyH5bCUe6VV87GU2xUExsM=" alt="EVP Logo" class="logo">
+        <nav>
+            <ul>
+                <li><a href="Contact.html"><i class="fas fa-life-ring"></i> Contact</a></li>
+                <li><a href="signup.html"><i class="fas fa-user-plus"></i> Sign Up</a></li>
+                <li><a href="Pricing.html"><i class="fas fa-money"></i> Pricing</a></li>
+                <li><a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                <li><a href="Reviews.html"><i class="fas fa-heart"></i>Reviews</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<section class="hero">
+    <div class="container">
+        <h1><i class="fas fa-car"></i> Find Your Perfect Parking Spot</h1>
+        <p>Discover and reserve parking spots near busy streets easily with EVP.</p>
+        <button><a href="findparking.html"><i class="fas fa-map-marker-alt"></i> Find parking near me</a></button>
+    </div>
+</section>
+<section class="search">
+    <div class="container">
+</section>
+<section class="features">
+    <div class="container">
+        <h2>Our Features</h2>
+        <div class="features-grid">
+            <div class="feature">
+                <i class="fas fa-car"></i>
+                <h3>Easy Parking</h3>
+                <p>Find and reserve parking spots quickly and easily.</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Secure Locations</h3>
+                <p>Park at secure locations to ensure your vehicle's safety.</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-dollar-sign"></i>
+                <h3>Affordable Rates</h3>
+                <p>Get the best rates for parking in busy areas.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="testimonials">
+    <div class="container">
+        <h2>Testimonials</h2>
+        <div class="testimonials-grid">
+            <div class="testimonial">
+                <p>"EVP makes parking so much easier. I can always find a spot near my office."</p>
+                <p>- Alex</p>
+            </div>
+            <div class="testimonial">
+                <p>"Affordable and secure parking options. Highly recommend EVP!"</p>
+                <p>- Jamie</p>
+            </div>
+            <div class="testimonial">
+                <p>"I love the convenience of booking a parking spot in advance."</p>
+                <p>- Taylor</p>
+            </div>
+        </div>
+    </div>
+</section>
+<footer>
+    <div class="container">
+        <p>&copy; 2024 EVP Parking. All rights reserved.</p>
+    </div>
+</footer>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchButton = document.getElementById('search-button');
+
+        searchButton.addEventListener('click', function() {
+            const addressInput = document.getElementById('address-input').value;
+            const startTime = document.getElementById('start-time').value;
+            const endTime = document.getElementById('end-time').value;
+
+            if (addressInput.trim() === '') {
+                alert('Please enter an address or venue.');
+            } else if (startTime === '' || endTime === '') {
+                alert('Please select both start and end times.');
+            } else {
+                alert('Searching for: ' + addressInput + ' between ' + startTime + ' and ' + endTime);
+                // Replace with actual search functionality here
+                // Example: Perform an AJAX request, fetch data, etc.
+            }
+        });
+    });
+</script>
+</body>
+</html>

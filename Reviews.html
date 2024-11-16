@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVP Parking - Reviews</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f8ff;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(to right, #0066ff, #00ccff);
+            padding: 0.5rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header .logo {
+            font-size: 1.2rem;
+            color: #fff;
+            text-decoration: none;
+            margin-right: auto;
+            padding-left: 20px;
+        }
+
+        header nav {
+            text-align: right;
+        }
+
+        header nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        header nav ul li {
+            display: inline-block;
+            margin-left: 1rem;
+        }
+
+        header nav ul li a {
+            color: #fff;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        header nav ul li a i {
+            margin-right: 0.5rem;
+        }
+
+        section.reviews {
+            padding-top: 100px; /* Adjust for fixed header */
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 20px;
+            overflow-y: auto;
+            height: calc(100vh - 120px); /* Set max height for scrolling */
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .review {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .review:hover {
+            transform: translateY(-5px);
+        }
+
+        .review p {
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+        }
+
+        .rating {
+            color: #f39c12;
+            font-size: 1.1rem;
+        }
+
+        /* Review Form Styles */
+        #review-form {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        #review-form textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            resize: none;
+        }
+
+        #review-form select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        #review-form button {
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        #review-form button:hover {
+            background: #555;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+
+            header .logo {
+                font-size: 1rem;
+            }
+
+            header nav {
+                text-align: center;
+                margin-top: 10px;
+            }
+
+            header nav ul li {
+                margin: 0 0.5rem;
+            }
+
+            section.reviews {
+                padding-top: 90px;
+                height: calc(100vh - 90px);
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <h1 class="logo"><a href="index.html">Easy Vehicle Parking Reviews</a></h1>
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="signup.html"><i class="fas fa-user-plus"></i> Sign Up</a></li>
+                <li><a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<section class="reviews">
+    <div class="container">
+        <h1>User Reviews</h1>
+        <div class="reviews-grid">
+            <div class="review">
+                <p>"Great experience, very convenient."</p>
+                <p>- Siddu <span class="rating">★★★★☆</span></p>
+            </div>
+            <div class="review">
+                <p>"Affordable and safe."</p>
+                <p>- Lokesh <span class="rating">★★★★★</span></p>
+            </div>
+            <div class="review">
+                <p>"Easy to find parking spots near my work."</p>
+                <p>- Alex <span class="rating">★★★★☆</span></p>
+            </div>
+        </div>
+        <form id="review-form">
+            <h3>Leave a Review</h3>
+            <textarea id="review-text" placeholder="Write your review here"></textarea>
+            <select id="review-rating">
+                <option value="5">★★★★★</option>
+                <option value="4">★★★★☆</option>
+                <option value="3">★★★☆☆</option>
+                <option value="2">★★☆☆☆</option>
+                <option value="1">★☆☆☆☆</option>
+            </select>
+            <button type="button" id="submit-review">Submit Review</button>
+        </form>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const submitReviewButton = document.getElementById('submit-review');
+
+        submitReviewButton.addEventListener('click', function() {
+            const reviewText = document.getElementById('review-text').value;
+            const reviewRating = document.getElementById('review-rating').value;
+
+            if (reviewText.trim() === '') {
+                alert('Please write a review.');
+            } else {
+                alert('Thank you for your review!');
+                // Add functionality to save the review
+                const reviewGrid = document.querySelector('.reviews-grid');
+                const newReview = document.createElement('div');
+                newReview.classList.add('review');
+                newReview.innerHTML = `<p>"${reviewText}"</p><p>- New User <span class="rating">${'★'.repeat(reviewRating)}${'☆'.repeat(5 - reviewRating)}</span></p>`;
+                reviewGrid.appendChild(newReview);
+                // Reset form
+                document.getElementById('review-text').value = '';
+                document.getElementById('review-rating').value = '5'; // Reset to default rating
+            }
+        });
+    });
+</script>
+</body>
+</html>
